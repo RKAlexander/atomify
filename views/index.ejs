@@ -17,20 +17,20 @@
         event.preventDefault();
         const url = form.elements.url.value;
         fetch('/scrape', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ url: encodeURIComponent(url) })
-        })
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ url: decodeURIComponent(url) })
+})
         .then(response => response.json())
         .then(data => {
           const title = document.querySelector('#title');
           title.innerHTML = data.h1;
           data.cssLinks.forEach(cssLink => {
             const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = decodeURIComponent(cssLink);
+            link.rel = cssLink.rel;
+            link.href = cssLink.href;
             document.head.appendChild(link);
           });
         });

@@ -15,12 +15,15 @@ app.get('/', (req, res) => {
 });
 
 app.post('/scrape', (req, res) => {
-  const url = decodeURIComponent(req.body.url);
+  const url = req.body.url;
   request(url, (error, response, html) => {
     if (!error && response.statusCode == 200) {
       const dom = new JSDOM(html);
       const h1 = dom.window.document.querySelector('h1').outerHTML;
-      const cssLinks = Array.from(dom.window.document.querySelectorAll('head link[rel="stylesheet"]')).map(link => link.outerHTML);
+      const cssLinks = Array.from(dom.window.document.querySelectorAll('head link[rel="stylesheet"]')).map(link => ({
+        href: link.getAttribute('href'),
+        rel: link.getAttribute('rel')
+      }));
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({ h1, cssLinks }));
     } else {
