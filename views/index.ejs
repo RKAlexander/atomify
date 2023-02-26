@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% if (stylesheetUrl) { %>
+      <link rel="stylesheet" href="<%= stylesheetUrl %>">
+    <% } %>
+  </head>
+  <body>
+    <h1><%= h1 %></h1>
+
+    <form action="/scrape" method="POST">
+      <label for="url">Enter a URL:</label>
+      <input type="text" name="url" id="url">
+      <button type="submit">Scrape</button>
+    </form>
+  </body>
+</html>
