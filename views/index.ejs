@@ -1,17 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <% if (stylesheetUrl) { %>
-      <link rel="stylesheet" href="<%= stylesheetUrl %>">
-    <% } %>
+    <meta charset="utf-8">
+    <title>Atomify</title>
   </head>
   <body>
-    <h1><%= h1 %></h1>
-
-    <form action="/scrape" method="POST">
-      <label for="url">Enter a URL:</label>
-      <input type="text" name="url" id="url">
+    <form action="/scrape" method="post">
+      <input type="text" name="url" placeholder="Enter a URL...">
       <button type="submit">Scrape</button>
     </form>
+    <h1 id="title"></h1>
+
+    <script>
+  const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const url = form.elements.url.value;
+  console.log('the url is:',url);
+  fetch('/scrape', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ url: encodeURIComponent(url) })
+  })
+  .then(response => response.json())
+  .then(data => {
+    const title = document.querySelector('#title');
+    title.innerHTML = data.h1;
+    data.cssLinks.forEach(cssLink => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = cssLink;
+      document.head.appendChild(link);
+    });
+  });
+});
+
+    </script>
   </body>
 </html>
