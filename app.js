@@ -7,6 +7,7 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
@@ -14,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/scrape', (req, res) => {
-  const url = req.body.url;
+  const url = decodeURIComponent(req.body.url);
   request(url, (error, response, html) => {
     if (!error && response.statusCode == 200) {
       const dom = new JSDOM(html);
@@ -28,7 +29,6 @@ app.post('/scrape', (req, res) => {
     }
   });
 });
-
 
 app.listen(3000, () => {
   console.log('App listening at http://localhost:3000');

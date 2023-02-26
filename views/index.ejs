@@ -12,31 +12,29 @@
     <h1 id="title"></h1>
 
     <script>
-  const form = document.querySelector('form');
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const url = form.elements.url.value;
-  console.log('the url is:',url);
-  fetch('/scrape', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ url: encodeURIComponent(url) })
-  })
-  .then(response => response.json())
-  .then(data => {
-    const title = document.querySelector('#title');
-    title.innerHTML = data.h1;
-    data.cssLinks.forEach(cssLink => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = cssLink;
-      document.head.appendChild(link);
-    });
-  });
-});
-
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const url = form.elements.url.value;
+        fetch('/scrape', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: encodeURIComponent(url) })
+        })
+        .then(response => response.json())
+        .then(data => {
+          const title = document.querySelector('#title');
+          title.innerHTML = data.h1;
+          data.cssLinks.forEach(cssLink => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = decodeURIComponent(cssLink);
+            document.head.appendChild(link);
+          });
+        });
+      });
     </script>
   </body>
 </html>
