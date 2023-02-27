@@ -1,3 +1,4 @@
+<!-- index.ejs-->
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,30 +11,56 @@
       <button type="submit">Scrape</button>
     </form>
     <h1 id="title"></h1>
-
+    <ul id="h2-styles">
+      <% if (h2s) { %>
+        <% h2s.forEach((h2) => { %>
+          <li>
+            <div><%= h2.html %></div>
+            <div><%= h2.style %></div>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <% if (cssLinks) { %>
+      <% cssLinks.forEach((cssLink) => { %>
+        <link rel="<%= cssLink.rel %>" href="<%= cssLink.href %>">
+      <% }); %>
+    <% } %>
     <script>
       const form = document.querySelector('form');
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         const url = form.elements.url.value;
         fetch('/scrape', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ url: decodeURIComponent(url) })
-})
-        .then(response => response.json())
-        .then(data => {
-          const title = document.querySelector('#title');
-          title.innerHTML = data.h1;
-          data.cssLinks.forEach(cssLink => {
-            const link = document.createElement('link');
-            link.rel = cssLink.rel;
-            link.href = cssLink.href;
-            document.head.appendChild(link);
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url: decodeURIComponent(url) })
+        })
+          .then(response => response.json())
+          .then(data => {
+            const title = document.querySelector('#title');
+            title.innerHTML = data.h1;
+            const h2Styles = document.querySelector('#h2-styles');
+            h2Styles.innerHTML = '';
+            data.h2s.forEach((h2) => {
+              const li = document.createElement('li');
+              const html = document.createElement('div');
+              const style = document.createElement('div');
+              html.innerHTML = h2.html;
+              style.innerHTML = h2.style;
+              li.appendChild(html);
+              li.appendChild(style);
+              h2Styles.appendChild(li);
+            });
+            data.cssLinks.forEach(cssLink => {
+              const link = document.createElement('link');
+              link.rel = cssLink.rel;
+              link.href = cssLink.href;
+              document.head.appendChild(link);
+            });
           });
-        });
       });
     </script>
   </body>
