@@ -1,4 +1,4 @@
-<!-- index.ejs-->
+<!-- index.ejs -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -17,6 +17,46 @@
           <li>
             <div><%= h2.html %></div>
             <div><%= h2.style %></div>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <ul id="h3-styles">
+      <% if (h3s) { %>
+        <% h3s.forEach((h3) => { %>
+          <li>
+            <div><%= h3.html %></div>
+            <div><%= h3.style %></div>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <ul id="h4-styles">
+      <% if (h4s) { %>
+        <% h4s.forEach((h4) => { %>
+          <li>
+            <div><%= h4.html %></div>
+            <div><%= h4.style %></div>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <ul id="h5-styles">
+      <% if (h5s) { %>
+        <% h5s.forEach((h5) => { %>
+          <li>
+            <div><%= h5.html %></div>
+            <div><%= h5.style %></div>
+          </li>
+        <% }); %>
+      <% } %>
+    </ul>
+    <ul id="h6-styles">
+      <% if (h6s) { %>
+        <% h6s.forEach((h6) => { %>
+          <li>
+            <div><%= h6.html %></div>
+            <div><%= h6.style %></div>
           </li>
         <% }); %>
       <% } %>
@@ -53,6 +93,54 @@
               li.appendChild(html);
               li.appendChild(style);
               h2Styles.appendChild(li);
+            });
+            const h3Styles = document.querySelector('#h3-styles');
+            h3Styles.innerHTML = '';
+            data.h3s.forEach((h3) => {
+              const li = document.createElement('li');
+              const html = document.createElement('div');
+              const style = document.createElement('div');
+              html.innerHTML = h3.html;
+              style.innerHTML = h3.style;
+              li.appendChild(html);
+              li.appendChild(style);
+              h3Styles.appendChild(li);
+            });
+            const h4Styles = document.querySelector('#h4-styles');
+            h4Styles.innerHTML = '';
+            data.h4s.forEach((h4) => {
+              const li = document.createElement('li');
+              const html = document.createElement('div');
+              const style = document.createElement('div');
+              html.innerHTML = h4.html;
+              style.innerHTML = h4.style;
+              li.appendChild(html);
+              li.appendChild(style);
+              h4Styles.appendChild(li);
+            });
+            const h5Styles = document.querySelector('#h5-styles');
+            h5Styles.innerHTML = '';
+            data.h5s.forEach((h5) => {
+              const li = document.createElement('li');
+              const html = document.createElement('div');
+              const style = document.createElement('div');
+              html.innerHTML = h5.html;
+              style.innerHTML = h5.style;
+              li.appendChild(html);
+              li.appendChild(style);
+              h5Styles.appendChild(li);
+            });
+            const h6Styles = document.querySelector('#h6-styles');
+            h6Styles.innerHTML = '';
+            data.h6s.forEach((h6) => {
+              const li = document.createElement('li');
+              const html = document.createElement('div');
+              const style = document.createElement('div');
+              html.innerHTML = h6.html;
+              style.innerHTML = h6.style;
+              li.appendChild(html);
+              li.appendChild(style);
+              h6Styles.appendChild(li);
             });
             data.cssLinks.forEach(cssLink => {
               const link = document.createElement('link');
